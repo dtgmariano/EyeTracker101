@@ -1,0 +1,16 @@
+﻿<Window x:Class="Exemplo1.Console"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Console" Height="400" Width="680">
+    <Grid x:Name="LayoutRoot2">
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="293,10,0,0" VerticalAlignment="Top" Width="108" Click="btTopCenter_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="293,270,0,0" VerticalAlignment="Top" Width="108" Click="btBottomCenter_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="10,10,0,0" VerticalAlignment="Top" Width="108" Click="btTopLeft_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="554,10,0,0" VerticalAlignment="Top" Width="108" Click="btTopRight_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="554,270,0,0" VerticalAlignment="Top" Width="108" Click="btBottomRight_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="13,273,0,0" VerticalAlignment="Top" Width="108" Click="btBottomLeft_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="10,137,0,0" VerticalAlignment="Top" Width="108" Click="btCenterLeft_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="90" Margin="554,137,0,0" VerticalAlignment="Top" Width="108" Click="btCenterRight_Click"/>
+
+    </Grid>
+</Window>
