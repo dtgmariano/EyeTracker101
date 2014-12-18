@@ -1,0 +1,115 @@
+﻿<Window x:Class="Exemplo1.Console"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Console" 
+        Background="DarkGray"
+        Height="395" 
+        Width="708" 
+        WindowStyle="None" 
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <BitmapImage x:Key="ImageSource1" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\Felipe\Desktop\EyeTracker101-master\EyeTracker101-master-12-17\Exemplo2\Exemplo1\bin\Debug\graphics\arrow_cl.png"/>
+        <Style x:Key="NoChromeButton" TargetType="{x:Type Button}">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="Chrome" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"  Value="true">
+                                <Setter Property="Opacity" TargetName="Chrome" Value="0.5"/>
+                            </Trigger>
+                            <Trigger Property="Button.IsPressed"  Value="true">
+                                <Setter Property="Opacity" TargetName="Chrome" Value="1"/>
+                            </Trigger>
+                            
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+
+
+    <Grid x:Name="LayoutRoot2">
+        <Button x:Name="btTopCenter" Style="{DynamicResource NoChromeButton}" Margin="312,10,0,0" Click="btTopCenter_Click">
+            <Image Source="{DynamicResource ImageSource1}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="90"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+        <Button x:Name="btBottomCenter" Style="{DynamicResource NoChromeButton}" Margin="312,305,0,0" Click="btBottomCenter_Click">
+            <Image Source="{DynamicResource ImageSource1}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-90"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+        <Button x:Name="btTopLeft" Style="{DynamicResource NoChromeButton}" Margin="10,10,0,0" Click="btTopLeft_Click">
+            <Image Source="{DynamicResource ImageSource1}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="45"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+        <Button x:Name="btTopRight" Style="{DynamicResource NoChromeButton}" Margin="612,10,0,0" Click="btTopRight_Click">
+            <Image Source="{DynamicResource ImageSource1}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-225"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+        <Button x:Name="btBottomRight" Style="{DynamicResource NoChromeButton}" Margin="612,305,0,0" Click="btBottomRight_Click">
+            <Image Source="{DynamicResource ImageSource1}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-135"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+        <Button x:Name="btBottomLeft" Style="{DynamicResource NoChromeButton}" Margin="10,305,0,0" Click="btBottomLeft_Click">
+            <Image Source="{DynamicResource ImageSource1}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-45"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+        <Button x:Name="btCenterLeft" Style="{DynamicResource NoChromeButton}" Margin="10,153,0,0" Click="btCenterLeft_Click">
+            <Image Source="{DynamicResource ImageSource1}" />
+        </Button>
+        <Button x:Name="btCenterRight" Style="{DynamicResource NoChromeButton}" Margin="612,153,0,0" Click="btCenterRight_Click">
+            <Image Source="{DynamicResource ImageSource1}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="180"/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Button>
+
+    </Grid>
+</Window>
