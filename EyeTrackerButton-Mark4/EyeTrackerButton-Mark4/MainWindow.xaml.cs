@@ -13,16 +13,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using TETCSharpClient;
-using TETCSharpClient.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
 
-namespace Exemplo1
+using TETCSharpClient;
+using TETCSharpClient.Data;
+
+using EyeTrackerButton_Mark4.Handler;
+
+
+namespace EyeTrackerButton_Mark4
 {
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
     public partial class MainWindow : Window, IGazeListener
     {
         #region Variables
@@ -182,6 +189,5 @@ namespace Exemplo1
 
             public static extern bool SetCursorPos(int x, int y);
         }
-
     }
 }

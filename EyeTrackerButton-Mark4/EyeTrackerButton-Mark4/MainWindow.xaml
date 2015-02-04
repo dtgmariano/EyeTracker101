@@ -4,7 +4,7 @@
  *
  * This source code is licensed under the BSD-style license found in the LICENSE file in the root directory of this source tree. 
 -->
-<Window x:Class="Exemplo1.MainWindow"
+<Window x:Class="EyeTrackerButton_Mark4.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -20,12 +20,12 @@
     ResizeMode="NoResize"
     Opacity="0.5"
     AllowsTransparency="True">
-    
+
     <Grid x:Name="LayoutRoot">
 
         <Grid Panel.ZIndex="2" x:Name="GridButton" Margin="0" VerticalAlignment="Top" HorizontalAlignment="Right" Height="200" Width="200">
             <Rectangle Fill="DarkGray"  x:Name="buttonSelect" Opacity="0.5"/>
-             </Grid>
+        </Grid>
 
         <!--<Canvas Panel.ZIndex="3" x:Name="canvas_overlay">
             <Image x:Name ="GazePointer" Source="C:/Users/Felipe/Desktop/Backup Page Changer/Page Changer 11-17/Scroll/Graphics/alvo.png" Width="50" Height="50" />

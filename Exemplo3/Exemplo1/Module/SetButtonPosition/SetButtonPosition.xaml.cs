@@ -13,13 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 
-
 namespace Exemplo1
 {
-    public partial class Console : Window
+    public partial class SetButtonPosition : Window
     {
         public int btSize = 200;
-        public Console()
+        public SetButtonPosition()
         {
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -66,7 +65,7 @@ namespace Exemplo1
         }
         public void StartButton(double _Left, double _Top)
         {
-            MainWindow win2 = new MainWindow(_Left, _Top);
+            EyeTrackerButton win2 = new EyeTrackerButton(_Left, _Top);
             win2.Show();
             this.Close();
         }
