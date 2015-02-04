@@ -32,6 +32,7 @@ namespace Exemplo1
         public double buttonWidth;
         //private List<GazeData> sampleLog;
         DispatcherTimer timer = new DispatcherTimer();
+        public IConnectionStateListener listener;
         private bool CONTROLE = false;
 
         #endregion
@@ -43,9 +44,12 @@ namespace Exemplo1
             InitializeComponent();
             GazeManager.Instance.Activate(GazeManager.ApiVersion.VERSION_1_0, GazeManager.ClientMode.Push);
             GazeManager.Instance.AddGazeListener(this);
-
+            //Teste
+            GazeManager.Instance.AddConnectionStateListener(listener);
+            // Fim de Teste
             timer.Interval = TimeSpan.FromSeconds(0.5);
             timer.Tick += timer_Tick;
+            timer.Start();
 
             StartupPosition(_Left, _Top);
             buttonWidth = _Left;
@@ -79,12 +83,28 @@ namespace Exemplo1
             CheckClick(x, y, buttonHeight, buttonWidth);
 
             // start or stop tracking lost animation
-            //if ((gazeData.State & GazeData.STATE_TRACKING_GAZE) == 0 &&
-            //   (gazeData.State & GazeData.STATE_TRACKING_PRESENCE) == 0) return;
-
-            if ((gazeData.State & GazeData.STATE_TRACKING_LOST) == 0)
+            if ((gazeData.State & GazeData.STATE_TRACKING_GAZE) == 0 &&
+               (gazeData.State & GazeData.STATE_TRACKING_PRESENCE) == 0) 
+                //return;
                 Dispatcher.BeginInvoke(new Action(() => buttonSelect.Fill = new SolidColorBrush(System.Windows.Media.Colors.Red)));
 
+            //OnConnectionStateChanged(GazeManager.Instance.IsActivated);
+            //if (listener.OnConnectionStateChanged == true)
+            //if ((gazeData.State & GazeData.STATE_TRACKING_LOST) != 0)
+                //Dispatcher.BeginInvoke(new Action(() => buttonSelect.Fill = new SolidColorBrush(System.Windows.Media.Colors.Red)));
+
+        }
+
+        public void OnConnectionStateChanged(bool IsConnected)
+        {
+            if (IsConnected == false)
+            {
+                Dispatcher.BeginInvoke(new Action(() => buttonSelect.Fill = new SolidColorBrush(System.Windows.Media.Colors.Yellow)));
+            }
+            //else 
+            //{
+            //    Dispatcher.BeginInvoke(new Action(() => buttonSelect.Fill = new SolidColorBrush(System.Windows.Media.Colors.DarkGray)));
+            //}
         }
 
         public void StartupPosition(double _Left, double _Top)
@@ -149,7 +169,8 @@ namespace Exemplo1
         private void timer_Tick(object sender, EventArgs e)
         {
             CONTROLE = false;
-            timer.Stop();
+            OnConnectionStateChanged(GazeManager.Instance.IsActivated);
+            //timer.Stop();
         }
 
         #endregion
