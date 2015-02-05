@@ -30,6 +30,7 @@ namespace EyeTrackerButton_Mark4.Config
         private void btTopLeft_Click(object sender, RoutedEventArgs e)
         {
             StartButton(0, 0);
+            var a = Screen.PrimaryScreen.Bounds;
         }
 
         private void btTopCenter_Click(object sender, RoutedEventArgs e)
@@ -66,10 +67,11 @@ namespace EyeTrackerButton_Mark4.Config
         {
             StartButton(Screen.PrimaryScreen.Bounds.Width - btSize, Screen.PrimaryScreen.Bounds.Height - btSize);
         }
+
         public void StartButton(double _Left, double _Top)
         {
-            EyeTrackerButton win2 = new EyeTrackerButton(_Left, _Top);
-            win2.Show();
+            MainWindow mw = new MainWindow(_Left, _Top);
+            mw.Show();
             this.Close();
         }
     }
