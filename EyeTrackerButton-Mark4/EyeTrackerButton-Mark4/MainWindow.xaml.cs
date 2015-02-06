@@ -54,7 +54,7 @@ namespace EyeTrackerButton_Mark4
             //Teste
             GazeManager.Instance.AddConnectionStateListener(listener);
             // Fim de Teste
-            timer.Interval = TimeSpan.FromSeconds(0.5);
+            timer.Interval = TimeSpan.FromMilliseconds(800);
             timer.Tick += timer_Tick;
             timer.Start();
 
