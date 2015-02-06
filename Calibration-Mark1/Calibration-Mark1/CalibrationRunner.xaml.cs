@@ -92,6 +92,8 @@ namespace Calibration_Mark1
         private bool trackeStateOK = false;
         private bool isAborting = false;
 
+        private int sequenciaPontos = 3;
+
         #endregion
 
         #region Events
@@ -171,12 +173,13 @@ namespace Calibration_Mark1
 
         #region Constructor
 
-        public CalibrationRunner() : this(Screen.PrimaryScreen, Screen.PrimaryScreen.Bounds.Size, 9) { }
+        public CalibrationRunner() : this(Screen.PrimaryScreen, Screen.PrimaryScreen.Bounds.Size, 9, 750, 750, 3) { }
 
-        public CalibrationRunner(Screen screen, Size calibrationAreaSize, int pointCount)
+        public CalibrationRunner(Screen screen, Size calibrationAreaSize, int pointCount, int tempoAmostragem, int tempoTransicao, int sequencia)
         {
-            this.sampleTimeMs = 750;
-            this.transitionTimeMs = 750;
+            this.sampleTimeMs = tempoAmostragem;
+            this.transitionTimeMs = tempoTransicao;
+            this.sequenciaPontos = sequencia;
             this.screen = screen;
             this.calibrationAreaSize = calibrationAreaSize;
             this.count = pointCount;
@@ -697,14 +700,28 @@ namespace Calibration_Mark1
             // Shuffle point order
             Queue<Point2D> calibrationPoints = new Queue<Point2D>();
             
-            //int[] order = new int[PointCount];
+            int[] order = new int[PointCount];
             //for (var c = 0; c < PointCount; c++)
             //    order[c] = PointCount - c - 1;
             //    //order[c] = c;
 
             //Shuffle(order);
+            switch (sequenciaPontos)
+            {
+                case 1:
+                    for (var c = 0; c < PointCount; c++)
+                        order[c] = c;
+                    break;
+                case 2:
+                    for (var c = 0; c < PointCount; c++)
+                        order[c] = PointCount - (c + 1);
+                    break;
+                case 3:
+                    Shuffle(order);
+                    break;
+            }
 
-            List<int> order = new List<int>() { 0, 1, 2, 3, 4, 8, 7, 6, 5 };
+            //List<int> order = new List<int>() { 0, 1, 2, 3, 4, 8, 7, 6, 5 };           
 
             foreach (int number in order)
                 calibrationPoints.Enqueue((Point2D)points[number]);

@@ -144,8 +144,28 @@ namespace Calibration_Mark1
             // Update screen to calibrate where the window currently is
             activeScreen = Screen.FromHandle(new WindowInteropHelper(this).Handle);
 
+// TESTE FUNÇÃO
+            int amostragem = Convert.ToInt32(tempoAmostragem.Text);
+            int transicao = Convert.ToInt32(tempoTransicao.Text);
+
+            int totalPontos;
+            if(pontos9.IsChecked == true)
+                totalPontos = 9;
+            else if (pontos12.IsChecked == true)
+                totalPontos = 12;
+            else
+                totalPontos = 16;
+
+            int sequencia;
+            if (seqCrescente.IsChecked == true)
+                sequencia = 1;
+            else if (seqDescrescente.IsChecked == true)
+                sequencia = 2;
+            else
+                sequencia = 3;
+// FIM TESTE FUNÇÃO
             // Initialize and start the calibration
-            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, 9);
+            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, totalPontos, amostragem, transicao, sequencia);
             calRunner.OnResult += calRunner_OnResult;
             calRunner.Start();
         }

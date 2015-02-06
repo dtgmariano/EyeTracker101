@@ -33,12 +33,17 @@
         <TextBlock x:Name="RatingText" HorizontalAlignment="Center" Text="" VerticalAlignment="Top" Foreground="White" FontSize="15" TextAlignment="Right" TextWrapping="Wrap" FontWeight="Bold" />
         <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Right" Height="270" Margin="0,16,-364,0" Stroke="Black" VerticalAlignment="Top" Width="359"/>
         <Label Content="Número de Pontos" HorizontalAlignment="Left" Height="27" Margin="320,47,-137,0" VerticalAlignment="Top" Width="120"/>
-        <RadioButton x:Name="pontos9"  IsChecked="True" Content="9" HorizontalAlignment="Left" Margin="500,52,-242,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
-        <RadioButton x:Name="pontos12" Content="12" HorizontalAlignment="Left" Margin="550,52,-292,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
-        <RadioButton x:Name="pontos16" Content="16" HorizontalAlignment="Left" Margin="600,52,-342,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
+        <RadioButton GroupName="Pontos" x:Name="pontos9"  IsChecked="True" Content="9" HorizontalAlignment="Left" Margin="500,52,-242,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
+        <RadioButton GroupName="Pontos" x:Name="pontos12" Content="12" HorizontalAlignment="Left" Margin="550,52,-292,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
+        <RadioButton GroupName="Pontos" x:Name="pontos16" Content="16" HorizontalAlignment="Left" Margin="600,52,-342,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
         <Label Content="Tempo Amostragem (ms)" HorizontalAlignment="Left" Height="27" Margin="320,90,-166,0" VerticalAlignment="Top" Width="149"/>
         <Label Content="Tempo Transição (ms)" HorizontalAlignment="Left" Height="27" Margin="320,128,-166,0" VerticalAlignment="Top" Width="149"/>
-        <TextBox HorizontalAlignment="Left" Height="25" Margin="500,92,-327,0" TextWrapping="Wrap" Text="Digite aqui o valor." VerticalAlignment="Top" Width="130"/>
-        <TextBox HorizontalAlignment="Left" Height="25" Margin="500,128,-327,0" TextWrapping="Wrap" Text="Digite aqui o valor." VerticalAlignment="Top" Width="130"/>
+        <TextBox x:Name="tempoAmostragem" HorizontalAlignment="Left" Height="25" Margin="500,92,-327,0" TextWrapping="Wrap" Text="750" VerticalAlignment="Top" Width="130"/>
+        <TextBox x:Name="tempoTransicao" HorizontalAlignment="Left" Height="25" Margin="500,128,-327,0" TextWrapping="Wrap" Text="750" VerticalAlignment="Top" Width="130"/>
+        
+        <Label Content="Sequência de Calibração" HorizontalAlignment="Left" Height="27" Margin="320,178,-166,0" VerticalAlignment="Top" Width="149"/>
+        <RadioButton GroupName="Sequencia" x:Name="seqCrescente" Content="Crescente" HorizontalAlignment="Left" Margin="500,170,-297,0" VerticalAlignment="Top" Width="100"/>
+        <RadioButton GroupName="Sequencia" x:Name="seqDescrescente" Content="Decrescente" HorizontalAlignment="Left" Margin="500,190,-297,0" VerticalAlignment="Top" Width="100"/>
+        <RadioButton GroupName="Sequencia" x:Name="seqAleatoria" IsChecked="True" Content="Aleatória" HorizontalAlignment="Left" Margin="500,210,-297,0" VerticalAlignment="Top" Width="100"/>     
     </Grid>
 </Window>
