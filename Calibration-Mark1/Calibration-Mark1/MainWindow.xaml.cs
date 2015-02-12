@@ -1,19 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Navigation;
-//using System.Windows.Shapes;
-
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
@@ -23,32 +8,30 @@ using TETControls.Cursor;
 using TETControls.TrackBox;
 using TETCSharpClient.Data;
 using System.Windows.Interop;
+using System.Windows.Controls;
+using System.Windows.Media;
 using TETCSharpClient;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Calibration_Mark1
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-//    public partial class MainWindow : Window
-//    {
-//        public MainWindow()
-//        {
-//            InitializeComponent();
-//        }
-//    }
-//}
     public partial class MainWindow : IConnectionStateListener
     {
         private Screen activeScreen = Screen.PrimaryScreen;
         private CursorControl cursorControl;
 
-        private bool isCalibrated;
+        //private bool isCalibrated;
+        public int totalPontos;
+
+        public int tempoAmostragem;
+        public int tempoTransicao;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            totalPontos = Convert.ToInt32(pontos9.Content);
+
             this.ContentRendered += (sender, args) => InitClient();
             this.KeyDown += MainWindow_KeyDown;
         }
@@ -78,17 +61,17 @@ namespace Calibration_Mark1
 
             switch (e.Key)
             {
-                // Start calibration on hitting "C"
+                // Iniciar calibração ao pressionar tecla "C"
                 case Key.C:
                     ButtonCalibrateClicked(this, null);
                     break;
 
-                // Toggle mouse redirect with "M"
+                // Alternar controle do mouse ao pressionar tecla "M"
                 case Key.M:
                     ButtonMouseClicked(this, null);
                     break;
 
-                // Turn cursor control off on hitting Escape
+                // Desligar controle do mouse ao pressionar ESC
                 case Key.Escape:
                     if (cursorControl != null)
                         cursorControl.Enabled = false;
@@ -145,27 +128,35 @@ namespace Calibration_Mark1
             activeScreen = Screen.FromHandle(new WindowInteropHelper(this).Handle);
 
 // TESTE FUNÇÃO
-            int amostragem = Convert.ToInt32(tempoAmostragem.Text);
-            int transicao = Convert.ToInt32(tempoTransicao.Text);
+            tempoAmostragem = Convert.ToInt32(TextBox_Amostragem.Text);
+            tempoTransicao = Convert.ToInt32(TextBox_Transicao.Text);
 
-            int totalPontos;
-            if(pontos9.IsChecked == true)
-                totalPontos = 9;
-            else if (pontos12.IsChecked == true)
-                totalPontos = 12;
-            else
-                totalPontos = 16;
+            int[] josefa = tointarray(textoCustomizada.Text, '-');
+            string sequenciaCustomizada = " ";
+
+            //int totalPontos;
+            //if(pontos9.IsChecked == true)
+            //    totalPontos = 9;
+            //else if (pontos12.IsChecked == true)
+            //    totalPontos = 12;
+            //else
+            //    totalPontos = 16;
 
             int sequencia;
             if (seqCrescente.IsChecked == true)
                 sequencia = 1;
             else if (seqDescrescente.IsChecked == true)
                 sequencia = 2;
-            else
+            else if (seqAleatoria.IsChecked == true)
                 sequencia = 3;
+            else
+            {
+                sequencia = 4;
+                sequenciaCustomizada = textoCustomizada.Text;
+            }
 // FIM TESTE FUNÇÃO
             // Initialize and start the calibration
-            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, totalPontos, amostragem, transicao, sequencia);
+            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, totalPontos, tempoAmostragem, tempoTransicao, sequencia);
             calRunner.OnResult += calRunner_OnResult;
             calRunner.Start();
         }
@@ -179,14 +170,14 @@ namespace Calibration_Mark1
                 return;
             }
 
-            // Show calibration results rating
+            // Mostrar resultados da calibração
             if (e.Result == CalibrationRunnerResult.Success)
             {
-                isCalibrated = true;
+                //isCalibrated = true;
                 UpdateState();
             }
             else
-                MessageBox.Show(this, "Calibration failed, please try again");
+                MessageBox.Show(this, "Calibração falhou, por favor tente novamente");
         }
 
         private void UpdateState()
@@ -194,7 +185,7 @@ namespace Calibration_Mark1
             // No connection
             if (GazeManager.Instance.IsActivated == false)
             {
-                btnCalibrate.Content = "Connect";
+                btnCalibrate.Content = "Conectar";
                 btnMouse.Content = "";
                 RatingText.Text = "";
                 return;
@@ -202,17 +193,17 @@ namespace Calibration_Mark1
 
             if (GazeManager.Instance.IsCalibrated == false)
             {
-                btnCalibrate.Content = "Calibrate";
+                btnCalibrate.Content = "Calibrar";
             }
             else
             {
-                btnCalibrate.Content = "Recalibrate";
+                btnCalibrate.Content = "Recalibrar";
 
                 // Set mouse-button label
-                btnMouse.Content = "Mouse control On";
+                btnMouse.Content = "Controle do mouse ON";
 
                 if (cursorControl != null && cursorControl.Enabled)
-                    btnMouse.Content = "Mouse control Off";
+                    btnMouse.Content = "Controle do mouse OFF";
 
                 if (GazeManager.Instance.LastCalibrationResult != null)
                     RatingText.Text = RatingFunction(GazeManager.Instance.LastCalibrationResult);
@@ -227,23 +218,61 @@ namespace Calibration_Mark1
             double accuracy = result.AverageErrorDegree;
 
             if (accuracy < 0.5)
-                return "Calibration Quality: PERFECT";
+                return "Qualidade da Calibração: EXCELENTE";
 
             if (accuracy < 0.7)
-                return "Calibration Quality: GOOD";
+                return "Qualidade da Calibração: BOA";
 
             if (accuracy < 1)
-                return "Calibration Quality: MODERATE";
+                return "Qualidade da Calibração: MODERADA";
 
             if (accuracy < 1.5)
-                return "Calibration Quality: POOR";
+                return "Qualidade da Calibração: RUIM";
 
-            return "Calibration Quality: REDO";
+            return "Qualidade da Calibração: REFAZER";
         }
 
         private void WindowClosed(object sender, EventArgs e)
         {
             GazeManager.Instance.Deactivate();
+        }
+
+        private void TextBox_seqCustomizada(object sender, RoutedEventArgs e)
+        {
+            if (!this.IsInitialized) return;
+            System.Windows.Controls.RadioButton radioButton = e.OriginalSource as System.Windows.Controls.RadioButton;
+
+            if ((radioButton != null) && (radioButton.Name == "seqCustomizada"))
+                textoCustomizada.Visibility = Visibility.Visible;
+            else
+                textoCustomizada.Visibility = Visibility.Hidden;
+        }
+
+        private void RadioButton_totalPontos(object sender, RoutedEventArgs e)
+        {
+            if (!this.IsInitialized) return;
+            System.Windows.Controls.RadioButton radioButton = e.OriginalSource as System.Windows.Controls.RadioButton;
+
+            if (radioButton != null)
+            {
+                totalPontos = Convert.ToInt32(radioButton.Content);
+            }
+        }
+
+        int[] tointarray(string value, char sep)
+        {
+            string[] sa = value.Split(sep);
+            int[] ia = new int[sa.Length];
+            for (int i = 0; i < ia.Length; ++i)
+            {
+                int j;
+                string s = sa[i];
+                if (int.TryParse(s, out j))
+                {
+                    ia[i] = j;
+                }
+            }
+            return ia;
         }
     }
 }

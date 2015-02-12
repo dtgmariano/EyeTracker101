@@ -523,7 +523,8 @@ namespace Calibration_Mark1
 
                 // Signal tracker server that we're about to start (not when recalibrating points)
                 if (points.Count == PointCount)
-                    GazeManager.Instance.CalibrationStart((short)PointCount, this);
+                    //GazeManager.Instance.CalibrationStart((short)PointCount, this);
+                    GazeManager.Instance.CalibrationStart((short)9, this);
 
                 // Get first point, draw it, start timers etc.
                 currentPoint = PickNextPoint();
@@ -693,6 +694,7 @@ namespace Calibration_Mark1
                 {
                     double x = Lerp(paddingWidth, 1 - paddingWidth, dirX / (columns - 1));
                     double y = Lerp(paddingHeight, 1 - paddingHeight, dirY / (rows - 1));
+
                     points.Add(new Point2D(offsetX + x * scaleW, offsetY + y * scaleH));
                 }
             }
@@ -701,6 +703,7 @@ namespace Calibration_Mark1
             Queue<Point2D> calibrationPoints = new Queue<Point2D>();
             
             int[] order = new int[PointCount];
+
             //for (var c = 0; c < PointCount; c++)
             //    order[c] = PointCount - c - 1;
             //    //order[c] = c;
@@ -717,6 +720,8 @@ namespace Calibration_Mark1
                         order[c] = PointCount - (c + 1);
                     break;
                 case 3:
+                    for (var c = 0; c < PointCount; c++)
+                        order[c] = c;
                     Shuffle(order);
                     break;
             }
@@ -741,14 +746,15 @@ namespace Calibration_Mark1
             return value1 + (value2 - value1) * amount;
         }
 
-        private static void Shuffle<T>(IList<T> array)
+        //private static void Shuffle<T>(IList<T> array)
+        private static void Shuffle(int[] array)
         {
             if (array == null)
                 return;
 
             var random = Random;
 
-            for (var i = array.Count; i > 1; i--)
+            for (var i = array.Length; i > 1; i--)
             {
                 var j = random.Next(i);
                 var tmp = array[j];

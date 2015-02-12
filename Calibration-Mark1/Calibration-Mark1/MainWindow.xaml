@@ -1,12 +1,4 @@
-﻿<!--<Window x:Class="Calibration_Mark1.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
-</Window>-->
-<!-- 
+﻿<!-- 
  * Copyright (c) 2013-present, The Eye Tribe. 
  * All rights reserved.
  *
@@ -17,10 +9,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Eye Tribe Calibration"
         Height="340" 
-        Width="686" 
+        Width="691" 
         Closed="WindowClosed" 
         WindowStartupLocation="CenterScreen" 
         Background="Black">
+
+    <Window.Resources>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="#FF5F5F5F" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard >
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetProperty="Background.GradientStops[0].Offset" From="0" To="1" Duration="0:0:1"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave" >
+                    <BeginStoryboard >
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetProperty="Background.GradientStops[0].Offset" From="1" To="0" Duration="0:0:1"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Grid Margin="0,0,375,0">
         <Grid x:Name="TrackingStatusGrid" Width="280" Margin="0,16,1,0" HorizontalAlignment="Center" Height="235" VerticalAlignment="Top" />
@@ -31,19 +52,26 @@
         </Grid>
 
         <TextBlock x:Name="RatingText" HorizontalAlignment="Center" Text="" VerticalAlignment="Top" Foreground="White" FontSize="15" TextAlignment="Right" TextWrapping="Wrap" FontWeight="Bold" />
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Right" Height="270" Margin="0,16,-364,0" Stroke="Black" VerticalAlignment="Top" Width="359"/>
-        <Label Content="Número de Pontos" HorizontalAlignment="Left" Height="27" Margin="320,47,-137,0" VerticalAlignment="Top" Width="120"/>
-        <RadioButton GroupName="Pontos" x:Name="pontos9"  IsChecked="True" Content="9" HorizontalAlignment="Left" Margin="500,52,-242,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
-        <RadioButton GroupName="Pontos" x:Name="pontos12" Content="12" HorizontalAlignment="Left" Margin="550,52,-292,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
-        <RadioButton GroupName="Pontos" x:Name="pontos16" Content="16" HorizontalAlignment="Left" Margin="600,52,-342,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688"/>
-        <Label Content="Tempo Amostragem (ms)" HorizontalAlignment="Left" Height="27" Margin="320,90,-166,0" VerticalAlignment="Top" Width="149"/>
-        <Label Content="Tempo Transição (ms)" HorizontalAlignment="Left" Height="27" Margin="320,128,-166,0" VerticalAlignment="Top" Width="149"/>
-        <TextBox x:Name="tempoAmostragem" HorizontalAlignment="Left" Height="25" Margin="500,92,-327,0" TextWrapping="Wrap" Text="750" VerticalAlignment="Top" Width="130"/>
-        <TextBox x:Name="tempoTransicao" HorizontalAlignment="Left" Height="25" Margin="500,128,-327,0" TextWrapping="Wrap" Text="750" VerticalAlignment="Top" Width="130"/>
-        
-        <Label Content="Sequência de Calibração" HorizontalAlignment="Left" Height="27" Margin="320,178,-166,0" VerticalAlignment="Top" Width="149"/>
-        <RadioButton GroupName="Sequencia" x:Name="seqCrescente" Content="Crescente" HorizontalAlignment="Left" Margin="500,170,-297,0" VerticalAlignment="Top" Width="100"/>
-        <RadioButton GroupName="Sequencia" x:Name="seqDescrescente" Content="Decrescente" HorizontalAlignment="Left" Margin="500,190,-297,0" VerticalAlignment="Top" Width="100"/>
-        <RadioButton GroupName="Sequencia" x:Name="seqAleatoria" IsChecked="True" Content="Aleatória" HorizontalAlignment="Left" Margin="500,210,-297,0" VerticalAlignment="Top" Width="100"/>     
+
+        <Rectangle HorizontalAlignment="Right" Height="276" Margin="0,16,-364,0" Stroke="White" VerticalAlignment="Top" Width="359" RadiusX="8" RadiusY="8" Fill="#FF575757"/>
+        <Grid>
+            <Label Content="Número de Pontos" HorizontalAlignment="Left" Height="27" Margin="320,47,-137,0" VerticalAlignment="Top" Width="120" Foreground="White"/>
+            <RadioButton GroupName="Pontos" Checked="RadioButton_totalPontos" x:Name="pontos4"  Content="4" HorizontalAlignment="Left" Margin="490,50,-220,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688" Foreground="White"/>
+            <RadioButton GroupName="Pontos" Checked="RadioButton_totalPontos" x:Name="pontos9"  IsChecked="True"  Content="9" HorizontalAlignment="Left" Margin="535,50,-265,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688" Foreground="White"/>
+            <RadioButton GroupName="Pontos" Checked="RadioButton_totalPontos" x:Name="pontos12" Content="12" HorizontalAlignment="Left" Margin="580,50,-315,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688" Foreground="White"/>
+            <RadioButton GroupName="Pontos" Checked="RadioButton_totalPontos" x:Name="pontos16" Content="16" HorizontalAlignment="Left" Margin="625,50,-365,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.02,-0.688" Foreground="White"/>
+        </Grid>
+        <Label Content="Tempo Amostragem (ms)" HorizontalAlignment="Left" Height="27" Margin="320,90,-166,0" VerticalAlignment="Top" Width="149" Foreground="White"/>
+        <Label Content="Tempo Transição (ms)" HorizontalAlignment="Left" Height="27" Margin="320,128,-166,0" VerticalAlignment="Top" Width="149" Foreground="White"/>
+        <TextBox Grid.Column=" 1" Style="{StaticResource TextBoxStyle}" x:Name="TextBox_Amostragem" HorizontalAlignment="Left" Height="25" Margin="570,92,-351,0" TextWrapping="Wrap" Text="750" VerticalAlignment="Top" Width="80"/>
+        <TextBox x:Name="TextBox_Transicao" HorizontalAlignment="Left" Height="25" Margin="570,128,-347,0" TextWrapping="Wrap" Text="750" VerticalAlignment="Top" Width="80"/>
+
+        <Label Content="Sequência de Calibração" HorizontalAlignment="Left" Height="27" Margin="320,178,-166,0" VerticalAlignment="Top" Width="149" Foreground="White"/>
+
+        <RadioButton GroupName="Sequencia" Checked="TextBox_seqCustomizada" x:Name="seqCrescente" Content="Crescente" HorizontalAlignment="Left" Margin="500,170,-297,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+        <RadioButton GroupName="Sequencia" Checked="TextBox_seqCustomizada" x:Name="seqDescrescente" Content="Decrescente" HorizontalAlignment="Left" Margin="500,190,-297,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+        <RadioButton GroupName="Sequencia" Checked="TextBox_seqCustomizada" x:Name="seqAleatoria" IsChecked="True" Content="Aleatória" HorizontalAlignment="Left" Margin="500,210,-297,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+        <RadioButton GroupName="Sequencia" Checked="TextBox_seqCustomizada" x:Name="seqCustomizada" Content="Customizada" HorizontalAlignment="Left" Margin="500,231,-297,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+        <TextBox HorizontalAlignment="Left" x:Name="textoCustomizada" Height="25" Margin="407,252,-351,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="247" Visibility="Hidden" Text="1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16" />
     </Grid>
 </Window>
