@@ -11,6 +11,7 @@ using System.Windows.Interop;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TETCSharpClient;
+using System.ComponentModel;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Calibration_Mark1
@@ -133,14 +134,6 @@ namespace Calibration_Mark1
 
             int[] josefa = tointarray(textoCustomizada.Text, '-');
             string sequenciaCustomizada = " ";
-
-            //int totalPontos;
-            //if(pontos9.IsChecked == true)
-            //    totalPontos = 9;
-            //else if (pontos12.IsChecked == true)
-            //    totalPontos = 12;
-            //else
-            //    totalPontos = 16;
 
             int sequencia;
             if (seqCrescente.IsChecked == true)
@@ -273,6 +266,51 @@ namespace Calibration_Mark1
                 }
             }
             return ia;
+        }
+
+    }
+    public class ExampleViewModel : INotifyPropertyChanged
+    {
+        private string m_Name = "Type Here";
+        public ExampleViewModel()
+        {
+
+        }
+
+        public string Name
+        {
+            get
+            {
+                return m_Name;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    MessageBox.Show("Nome vazio");
+                    throw new Exception("Name can not be empty.");
+                }
+                if (value.Length > 12)
+                {
+                    throw new Exception("name can not be longer than 12 charectors");
+                }
+                if (m_Name != value)
+                {
+                    m_Name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+
         }
     }
 }
