@@ -1,32 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Shapes;
-
-//namespace Calibration_Mark1
-//{
-//    /// <summary>
-//    /// Interaction logic for CalibrationRunner.xaml
-//    /// </summary>
-//    public partial class CalibrationRunner : Window
-//    {
-//        public CalibrationRunner()
-//        {
-//            InitializeComponent();
-//        }
-//    }
-//}
-
-/*
+﻿/*
  * Copyright (c) 2013-present, The Eye Tribe. 
  * All rights reserved.
  *
@@ -58,8 +30,8 @@ namespace Calibration_Mark1
     {
         #region Variables
 
-        private const string MESSAGE_FOLLOW = "Follow the circle..";
-        private const string MESSAGE_COMPUTING = "Processing calibration, please wait.";
+        private const string MESSAGE_FOLLOW = "Siga o círculo..";
+        private const string MESSAGE_COMPUTING = "Processando calibração, por favor aguarde.";
 
         private const double FADE_IN_TIME = 2.5; //sec
         private const double FADE_OUT_TIME = 0.5; //sec
@@ -78,8 +50,8 @@ namespace Calibration_Mark1
 
         private int count = 9;
         private int latencyMs = 500;
-        private int sampleTimeMs = 750; //750;
-        private int transitionTimeMs = 750; //750;
+        private int sampleTimeMs = 750; // Em ms, o padrão é 750;
+        private int transitionTimeMs = 750; // Em ms, o padrão é 750;
         private int reSamplingCount;
         private bool calibrationFormReady = false;
 
@@ -92,7 +64,8 @@ namespace Calibration_Mark1
         private bool trackeStateOK = false;
         private bool isAborting = false;
 
-        private int sequenciaPontos = 3;
+        private int defineOrder = 3; // Valor para definir o tipo de ordenação dos pontos (crescente = 1; decrescente = 2; aleatória = 3; e customizada = 4).
+        private string pointSequence = ""; // String contendo a ordem da sequência customizada.
 
         #endregion
 
@@ -173,16 +146,17 @@ namespace Calibration_Mark1
 
         #region Constructor
 
-        public CalibrationRunner() : this(Screen.PrimaryScreen, Screen.PrimaryScreen.Bounds.Size, 9, 750, 750, 3) { }
+        public CalibrationRunner() : this(Screen.PrimaryScreen, Screen.PrimaryScreen.Bounds.Size, 9, 750, 750, 3, "") { }
 
-        public CalibrationRunner(Screen screen, Size calibrationAreaSize, int pointCount, int tempoAmostragem, int tempoTransicao, int sequencia)
+        public CalibrationRunner(Screen screen, Size calibrationAreaSize, int pointCount, int sampleTime, int transitionTime, int setOrder, string seqArray)
         {
-            this.sampleTimeMs = tempoAmostragem;
-            this.transitionTimeMs = tempoTransicao;
-            this.sequenciaPontos = sequencia;
+            this.sampleTimeMs = sampleTime;
+            this.transitionTimeMs = transitionTime;
+            this.defineOrder = setOrder;
             this.screen = screen;
             this.calibrationAreaSize = calibrationAreaSize;
             this.count = pointCount;
+            this.pointSequence = seqArray;
 
             InitializeComponent();
 
@@ -524,7 +498,7 @@ namespace Calibration_Mark1
                 // Signal tracker server that we're about to start (not when recalibrating points)
                 if (points.Count == PointCount)
                     //GazeManager.Instance.CalibrationStart((short)PointCount, this);
-                    GazeManager.Instance.CalibrationStart((short)9, this);
+                    GazeManager.Instance.CalibrationStart((short)9, this); // Comunica com o servidor para informar o número de pontos.
 
                 // Get first point, draw it, start timers etc.
                 currentPoint = PickNextPoint();
@@ -546,6 +520,22 @@ namespace Calibration_Mark1
         {
             if (OnResult != null)
                 OnResult(this, new CalibrationRunnerEventArgs(result, message, calibrationReport));
+        }
+
+        private int[] ToIntArray(string value, char sep) // Função para converter uma string em um vetor de inteiros, onde o separador é definido por 'sep'.
+        {
+            string[] sa = value.Split(sep);
+            int[] ia = new int[sa.Length];
+            for (int i = 0; i < ia.Length; ++i)
+            {
+                int j;
+                string s = sa[i];
+                if (int.TryParse(s, out j))
+                {
+                    ia[i] = j;
+                }
+            }
+            return ia;
         }
 
         #endregion
@@ -704,12 +694,7 @@ namespace Calibration_Mark1
             
             int[] order = new int[PointCount];
 
-            //for (var c = 0; c < PointCount; c++)
-            //    order[c] = PointCount - c - 1;
-            //    //order[c] = c;
-
-            //Shuffle(order);
-            switch (sequenciaPontos)
+            switch (defineOrder)
             {
                 case 1:
                     for (var c = 0; c < PointCount; c++)
@@ -724,9 +709,10 @@ namespace Calibration_Mark1
                         order[c] = c;
                     Shuffle(order);
                     break;
-            }
-
-            //List<int> order = new List<int>() { 0, 1, 2, 3, 4, 8, 7, 6, 5 };           
+                case 4:
+                    order = ToIntArray(pointSequence, '-');
+                    break;
+            }     
 
             foreach (int number in order)
                 calibrationPoints.Enqueue((Point2D)points[number]);

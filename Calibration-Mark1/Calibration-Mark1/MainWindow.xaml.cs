@@ -132,7 +132,7 @@ namespace Calibration_Mark1
             tempoAmostragem = Convert.ToInt32(TextBox_Amostragem.Text);
             tempoTransicao = Convert.ToInt32(TextBox_Transicao.Text);
 
-            int[] josefa = tointarray(textoCustomizada.Text, '-');
+            //int[] josefa = tointarray(textoCustomizada.Text, '-');
             string sequenciaCustomizada = " ";
 
             int sequencia;
@@ -149,7 +149,7 @@ namespace Calibration_Mark1
             }
 // FIM TESTE FUNÇÃO
             // Initialize and start the calibration
-            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, totalPontos, tempoAmostragem, tempoTransicao, sequencia);
+            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, totalPontos, tempoAmostragem, tempoTransicao, sequencia, sequenciaCustomizada);
             calRunner.OnResult += calRunner_OnResult;
             calRunner.Start();
         }
@@ -252,66 +252,6 @@ namespace Calibration_Mark1
             }
         }
 
-        int[] tointarray(string value, char sep)
-        {
-            string[] sa = value.Split(sep);
-            int[] ia = new int[sa.Length];
-            for (int i = 0; i < ia.Length; ++i)
-            {
-                int j;
-                string s = sa[i];
-                if (int.TryParse(s, out j))
-                {
-                    ia[i] = j;
-                }
-            }
-            return ia;
-        }
-
-    }
-    public class ExampleViewModel : INotifyPropertyChanged
-    {
-        private string m_Name = "Type Here";
-        public ExampleViewModel()
-        {
-
-        }
-
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                if (String.IsNullOrEmpty(value))
-                {
-                    MessageBox.Show("Nome vazio");
-                    throw new Exception("Name can not be empty.");
-                }
-                if (value.Length > 12)
-                {
-                    throw new Exception("name can not be longer than 12 charectors");
-                }
-                if (m_Name != value)
-                {
-                    m_Name = value;
-                    OnPropertyChanged("Name");
-                }
-            }
-        }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-
-        }
     }
 }
 

@@ -44,7 +44,7 @@
                         </LinearGradientBrush>
                     </Rectangle.Fill>
                 </Rectangle>
-                <Label x:Name="labelMessage" Content="Follow the circle.." Foreground="#FFFBFBFB" FontSize="29.333" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Segoe UI Light"/>
+                <Label x:Name="labelMessage" Content="Siga o círculo.." Foreground="#FFFBFBFB" FontSize="29.333" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Segoe UI Light"/>
             </Grid>
         </Grid>
     </Grid>
