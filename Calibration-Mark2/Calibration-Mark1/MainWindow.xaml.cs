@@ -146,20 +146,27 @@ namespace Calibration_Mark1
 
             int sequencia;
 
+            var directionToggleState = false;
             if (directionToggle.IsChecked == true)
-                MessageBox.Show("Evento Positivo.");
+                directionToggleState = true;
+            var startToggleState = false;
+            if (startToggle.IsChecked == true)
+                startToggleState = true;
 
-            if (randomMode.IsChecked == true)
-                sequencia = 3;
+            if (predefinedMode.IsChecked == true)
+                sequencia = 1;
+            else if (randomMode.IsChecked == true)
+                sequencia = 2;
             else
             {
-                sequencia = 4;
+                sequencia = 3;
                 sequenciaCustomizada = customModeInput.Text;
             }
+
 // FIM TESTE FUNÇÃO
             // Initialize and start the calibration
 
-            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, totalPontos, sampleTimeMs, transitionTimeMs, sequencia, sequenciaCustomizada);
+            CalibrationRunner calRunner = new CalibrationRunner(activeScreen, activeScreen.Bounds.Size, totalPontos, sampleTimeMs, transitionTimeMs, sequencia, sequenciaCustomizada, directionToggleState, startToggleState);
             calRunner.OnResult += calRunner_OnResult;
             calRunner.Start();
         }
@@ -240,15 +247,26 @@ namespace Calibration_Mark1
             GazeManager.Instance.Deactivate();
         }
 
-        private void CustomModeSelected(object sender, RoutedEventArgs e)
+        private void ModeSelect(object sender, RoutedEventArgs e)
         {
             if (!this.IsInitialized) return;
             System.Windows.Controls.RadioButton radioButton = e.OriginalSource as System.Windows.Controls.RadioButton;
 
             if ((radioButton != null) && (radioButton.Name == "customMode"))
+            {
                 customModeInput.Visibility = Visibility.Visible;
-            else
+                PredefinedControls.Visibility = Visibility.Hidden;
+            }
+            else if ((radioButton != null) && (radioButton.Name == "predefinedMode"))
+            {
                 customModeInput.Visibility = Visibility.Hidden;
+                PredefinedControls.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                customModeInput.Visibility = Visibility.Hidden;
+                PredefinedControls.Visibility = Visibility.Hidden;
+            }
         }
 
         private void CountTotalPoints(object sender, RoutedEventArgs e)

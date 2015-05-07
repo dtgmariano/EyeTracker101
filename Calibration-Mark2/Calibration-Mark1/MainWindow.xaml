@@ -112,13 +112,13 @@
 
         <Grid x:Name="SequenceControls" VerticalAlignment="Top" Margin="320,130,-350,40">
             <Label Content="Sequência de Calibração" HorizontalAlignment="Left" Height="27" Margin="-10,0,-160,0" VerticalAlignment="Top" Foreground="White"/>
-            <RadioButton GroupName="SequenceType" Checked="CustomModeSelected" x:Name="predefinedMode" Content="Pré-Definida"  Margin="0,35,224,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
-            <RadioButton GroupName="SequenceType" Checked="CustomModeSelected" x:Name="randomMode" IsChecked="True" Content="Aleatória" Margin="0,72,224,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
-            <RadioButton GroupName="SequenceType" Checked="CustomModeSelected" x:Name="customMode" Content="Customizada" Margin="0,106,224,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+            <RadioButton GroupName="SequenceType" Checked="ModeSelect" x:Name="predefinedMode" Content="Pré-Definida"  Margin="0,35,224,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+            <RadioButton GroupName="SequenceType" Checked="ModeSelect" x:Name="randomMode" IsChecked="True" Content="Aleatória" Margin="0,72,224,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
+            <RadioButton GroupName="SequenceType" Checked="ModeSelect" x:Name="customMode" Content="Customizada" Margin="0,106,224,0" VerticalAlignment="Top" Width="100" Foreground="White"/>
             <TextBox x:Name="customModeInput" Visibility="Hidden" Margin="80,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Text="0-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15" />
             <!--Valores: 9 = 108; 12 = 155; 16 = 225; -->
         </Grid>
-        <Grid x:Name="PredeterminedControls" VerticalAlignment="Top" Margin="420,160,-350,40">
+        <Grid x:Name="PredefinedControls" VerticalAlignment="Top" Margin="420,160,-350,40" Visibility="Hidden">
             <CheckBox x:Name="directionToggle" Style="{DynamicResource ToggleBoxStyle}" VerticalAlignment="Top" Margin="0,0,0,0" Foreground="White" Width="60" Height="30"/>
             <CheckBox x:Name="startToggle" Style="{DynamicResource ToggleBoxStyle}" VerticalAlignment="Top" Margin="0,22,0,0" Foreground="White" Width="60" Height="30"/>
             <Label Content="Horizontal" HorizontalAlignment="Left" Height="27" Margin="25,0,0,0" VerticalAlignment="Top" Foreground="White"/>

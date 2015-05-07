@@ -66,6 +66,8 @@ namespace Calibration_Mark1
 
         private int defineOrder = 3; // Valor para definir o tipo de ordenação dos pontos (crescente = 1; decrescente = 2; aleatória = 3; e customizada = 4).
         private string pointSequence = ""; // String contendo a ordem da sequência customizada.
+        private bool directionState = false;
+        private bool startState = false;
 
         #endregion
 
@@ -146,9 +148,9 @@ namespace Calibration_Mark1
 
         #region Constructor
 
-        public CalibrationRunner() : this(Screen.PrimaryScreen, Screen.PrimaryScreen.Bounds.Size, 9, 750, 750, 3, "") { }
+        public CalibrationRunner() : this(Screen.PrimaryScreen, Screen.PrimaryScreen.Bounds.Size, 9, 750, 750, 3, "", false, false) { }
 
-        public CalibrationRunner(Screen screen, Size calibrationAreaSize, int pointCount, int sampleTime, int transitionTime, int setOrder, string seqArray)
+        public CalibrationRunner(Screen screen, Size calibrationAreaSize, int pointCount, int sampleTime, int transitionTime, int setOrder, string seqArray, bool directionToggleState, bool startToggleState)
         {
             this.sampleTimeMs = sampleTime;
             this.transitionTimeMs = transitionTime;
@@ -157,6 +159,14 @@ namespace Calibration_Mark1
             this.calibrationAreaSize = calibrationAreaSize;
             this.count = pointCount;
             this.pointSequence = seqArray;
+            this.directionState = directionToggleState;
+            this.startState = startToggleState;
+
+            //if ((directionState == true)&&(startState == true))
+            //{
+            //    System.Windows.MessageBox.Show("Sucesso!");
+            //    this.Close();
+            //}
 
             InitializeComponent();
 
@@ -350,7 +360,7 @@ namespace Calibration_Mark1
             // Time to stop?
             if (reSamplingCount++ > NUM_MAX_CALIBRATION_ATTEMPTS || points.Count > NUM_MAX_RESAMPLE_POINTS)
             {
-                AbortCalibration(CalibrationRunnerResult.Failure, "Unable to calibrate.");
+                AbortCalibration(CalibrationRunnerResult.Failure, "A calibração não foi possível.");
                 StopAndClose();
                 return;
             }
@@ -497,8 +507,8 @@ namespace Calibration_Mark1
 
                 // Signal tracker server that we're about to start (not when recalibrating points)
                 if (points.Count == PointCount)
-                    //GazeManager.Instance.CalibrationStart((short)PointCount, this);
-                    GazeManager.Instance.CalibrationStart((short)6, this); // Comunica com o servidor para informar o número de pontos. <------------------
+                    GazeManager.Instance.CalibrationStart((short)PointCount, this);
+                    //GazeManager.Instance.CalibrationStart((short)6, this); // Comunica com o servidor para informar o número de pontos. <------------------
 
                 // Get first point, draw it, start timers etc.
                 currentPoint = PickNextPoint();
@@ -506,7 +516,7 @@ namespace Calibration_Mark1
             }
             catch (Exception ex)
             {
-                RaiseResult(CalibrationRunnerResult.Error, "An error occured in the calibration. Message: " + ex.Message);
+                RaiseResult(CalibrationRunnerResult.Error, "Um erro ocorreu durante a calibração. Mensagem: " + ex.Message);
             }
         }
 
@@ -694,22 +704,57 @@ namespace Calibration_Mark1
             
             int[] order = new int[PointCount];
 
+            int[,] Matriz = new int[(int)rows,(int)columns];
+            var aux = 0;
+
+            for (int j = 0; j < columns; j++)
+                for (int i = 0; i < rows; i++)
+                {
+                    Matriz[i, j] = aux;
+                    aux++;
+                }
+
             switch (defineOrder)
             {
                 case 1:
-                    for (var c = 0; c < PointCount; c++)
-                        order[c] = c;
+                    var aux2 = 0;
+                    if (startState == false) // Indica ordem crescente (do canto superior esquerdo ao canto inferior direito)
+                        if (directionState == false) // Indica sequência horizontal
+                            for (int i = 0; i < rows; i++)
+                                for (int j = 0; j < columns; j++)
+                                {
+                                    order[aux2] = Matriz[i, j];
+                                    aux2++;
+                                }
+                        else
+                            for (int j = 0; j < columns; j++)
+                                for (int i = 0; i < rows; i++)
+                                {
+                                    order[aux2] = Matriz[i, j];
+                                    aux2++;
+                                }
+                    else // Indica ordem decrescente (do canto inferior direito ao canto superior esquerdo)
+                        if (directionState == false) // Indica sequência horizontal
+                            for (int i = (int)rows - 1; i >= 0; i--)
+                                for (int j = (int)columns - 1; j >= 0; j--)
+                                {
+                                    order[aux2] = Matriz[i, j];
+                                    aux2++;
+                                }
+                        else
+                            for (int j = (int)columns - 1; j >= 0; j--)
+                                for (int i = (int)rows - 1; i >= 0; i--)
+                                {
+                                    order[aux2] = Matriz[i, j];
+                                    aux2++;
+                                }
                     break;
                 case 2:
-                    for (var c = 0; c < PointCount; c++)
-                        order[c] = PointCount - (c + 1);
-                    break;
-                case 3:
                     for (var c = 0; c < PointCount; c++)
                         order[c] = c;
                     Shuffle(order);
                     break;
-                case 4:
+                case 3:
                     order = ToIntArray(pointSequence, '-');
                     break;
             }     
@@ -717,7 +762,7 @@ namespace Calibration_Mark1
             foreach (int number in order)
                 calibrationPoints.Enqueue((Point2D)points[number]);
 
-            // De-normalize points to fit the current screen
+            // Desnormalização dos pontos para caber na tela atual
             foreach (var point in calibrationPoints)
             {
                 point.X *= Screen.Bounds.Width;
