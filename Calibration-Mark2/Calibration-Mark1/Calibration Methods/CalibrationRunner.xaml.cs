@@ -69,6 +69,32 @@ namespace Calibration_Mark1
         private bool directionState = false;
         private bool startState = false;
 
+        //Date: 14/05/2015
+        //var to set coordinates position
+        List<Point> test = new List<Point>(){
+            new Point(90,449),
+            new Point(563,450),
+            new Point(1036,451),
+            new Point(1510,449),
+            new Point(90,450),
+            new Point(563,451),
+            new Point(1036,449),
+            new Point(1510,450),
+            new Point(90,451)
+        };
+
+        List<Point> test2 = new List<Point>(){
+            new Point(90,449),
+            new Point(90,450),
+            new Point(90,451),
+            new Point(800,449),
+            new Point(800,450),
+            new Point(800,451),
+            new Point(1510,449),
+            new Point(1510,450),
+            new Point(1510,451)
+        };
+
         #endregion
 
         #region Events
@@ -763,11 +789,22 @@ namespace Calibration_Mark1
                 calibrationPoints.Enqueue((Point2D)points[number]);
 
             // Desnormalização dos pontos para caber na tela atual
+
+            int count = 0;
             foreach (var point in calibrationPoints)
             {
-                point.X *= Screen.Bounds.Width;
-                point.Y *= Screen.Bounds.Height;
+                point.X = test[count].X;
+                point.Y = test[count].Y;
+                count++;
             }
+            
+            /*old method*/
+            //foreach (var point in calibrationPoints)
+            //{
+            //    point.X *= Screen.Bounds.Width;
+            //    point.Y *= Screen.Bounds.Height;
+            //}
+            //Console.WriteLine();
 
             return calibrationPoints;
         }
