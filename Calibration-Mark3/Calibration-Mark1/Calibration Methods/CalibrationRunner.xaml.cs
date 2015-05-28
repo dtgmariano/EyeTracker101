@@ -71,28 +71,52 @@ namespace Calibration_Mark1
 
         //Date: 14/05/2015
         //var to set coordinates position
-        List<Point> test = new List<Point>(){
+        List<Point> test = new List<Point>(){ // 6 pontos de calibração
             new Point(90,449),
-            new Point(563,450),
-            new Point(1036,451),
-            new Point(1510,449),
-            new Point(90,450),
-            new Point(563,451),
-            new Point(1036,449),
-            new Point(1510,450),
-            new Point(90,451)
+            new Point(374,450),
+            new Point(658,451),
+            new Point(942,449),
+            new Point(1226,450),
+            new Point(1510,451),
+            new Point(1226,449),
+            new Point(942,451),
+            new Point(658,450)
         };
 
-        //List<Point> test2 = new List<Point>(){
+        //List<Point> test = new List<Point>(){ // 5 pontos de calibração
         //    new Point(90,449),
-        //    new Point(90,450),
-        //    new Point(90,451),
+        //    new Point(445,450),
+        //    new Point(800,451),
+        //    new Point(1155,449),
+        //    new Point(1510,450),
+        //    new Point(1155,451),
         //    new Point(800,449),
+        //    new Point(445,451),
+        //    new Point(90,450)
+        //};
+
+        //List<Point> test = new List<Point>(){ // 4 pontos de calibração
+        //    new Point(90,449),
+        //    new Point(563,450),
+        //    new Point(1036,451),
+        //    new Point(1510,449),
+        //    new Point(1036,450),
+        //    new Point(563,451),
+        //    new Point(90,449),
+        //    new Point(563,450),
+        //    new Point(1036,451)
+        //};
+
+        //List<Point> test = new List<Point>(){ // 3 pontos de calibração
+        //    new Point(90,449),
         //    new Point(800,450),
+        //    new Point(1510,451),
+        //    new Point(800,449),
+        //    new Point(90,450),
         //    new Point(800,451),
         //    new Point(1510,449),
-        //    new Point(1510,450),
-        //    new Point(1510,451)
+        //    new Point(800,450),
+        //    new Point(90,451)
         //};
 
         #endregion
